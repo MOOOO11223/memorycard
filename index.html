@@ -57,11 +57,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/0205.loader.js";
+      var loaderUrl = buildUrl + "/0206.loader.js";
       var config = {
-        dataUrl: buildUrl + "/0205.data",
-        frameworkUrl: buildUrl + "/0205.framework.js",
-        codeUrl: buildUrl + "/0205.wasm",
+        dataUrl: buildUrl + "/0206.data",
+        frameworkUrl: buildUrl + "/0206.framework.js",
+        codeUrl: buildUrl + "/0206.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "My project",
@@ -98,7 +98,7 @@
         canvas.style.height = "100%";
       }
 
-      canvas.style.background = "url('" + buildUrl + "/0205.jpg') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/0206.jpg') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
@@ -108,7 +108,7 @@
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 loadingBar.style.display = "none";
-               
+                
               }).catch((message) => {
                 alert(message);
               });
