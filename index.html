@@ -26,10 +26,11 @@
     <script>  
 
 
-const idd = "";
+let idd = "";
 console.log("6666 ");
        // 監聽來自父頁面的消息
-       window.addEventListener("message", function (event) {
+    window.addEventListener("message", function (event) 
+    {
     console.log("接收到的消息：", event.data);//會包含baseUrl、id
 
     // 檢查消息中是否包含正確的 baseUrl
@@ -41,13 +42,15 @@ console.log("6666 ");
     {
       console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
       console.log("消息來源驗證通過，id：", event.data.id);
+      idd = "" + event.data.id;
+      console.log("Unity WebGL idd" + idd);
     }
-    idd = "" + event.data.id;
-    console.log("Unity WebGL idd" + idd);
+    console.log("Unity WebGL idd2" + idd);
+    
   // 確保消息中包含 id
   
     });
-    console.log("Unity WebGL idd2" + idd);
+  console.log("Unity WebGL idd3" + idd);
 
 
     
