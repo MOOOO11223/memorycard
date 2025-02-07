@@ -42,7 +42,8 @@ console.log("6666 ");
       console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
       console.log("消息來源驗證通過，id：", event.data.id);
     }
-    id = event.data.id;
+    id = "" + event.data.id;
+    console.log("Unity WebGL id" + id);
   // 確保消息中包含 id
   
     });
@@ -147,7 +148,9 @@ console.log("6666 ");
             unityInstance = instance; // 保存 Unity 實例
             loadingBar.style.display = "none";
             console.log("Unity WebGL 已初始化");
-            unityInstance.SendMessage("loadid", "ReceiveID", id);
+            console.log("Unity WebGL id" + id);
+            console.log("Unity WebGL event.data.id" + event.data.id);
+            unityInstance.SendMessage("loadid", "ReceiveID", event.data.id);
 
             
           })
