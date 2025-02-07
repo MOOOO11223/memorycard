@@ -27,33 +27,32 @@
 
     console.log("6666 ");
        // 監聽來自父頁面的消息
-    window.addEventListener("message", function (event) {
-      console.log("8 8 8 8 8 ");
-      console.warn(event.data.baseUrl);
-        // 確保消息來自正確的來源
-        if (event.data.baseUrl !== "http://localhost/victor/memorycard.php") {
-            console.warn("收到來自未知來源的消息，已忽略");
-            return;
-        }
-        else
-        {
-          console.log("抓到");
-        }
+       window.addEventListener("message", function (event) {
+    console.log("接收到的消息：", event.data);//會包含baseUrl、id
 
-        const data = event.data;
-        if (data && data.id) {
-            const id = data.id;
-            console.log("收到來自父頁面的 ID：" + id);
+    // 檢查消息中是否包含正確的 baseUrl
+    if (event.data.baseUrl !== "http://localhost/victor/memorycard.php") {
+        console.warn("收到來自未知來源的消息，已忽略");
+        return;
+    }
+    
 
-            // 傳遞到 Unity WebGL
-            if (typeof unityInstance !== "undefined") {
-                unityInstance.SendMessage("loadid", "ReceiveID", id);
-            } else {
-                console.error("Unity WebGL 尚未初始化");
-            }
+    console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
+
+    // 確保消息中包含 id
+    if (event.data.id) {
+        const id = event.data.id;
+        console.log("收到來自父頁面的 ID：", id);
+
+        // 傳遞到 Unity WebGL
+        if (typeof unityInstance !== "undefined") {
+            unityInstance.SendMessage("loadid", "ReceiveID", id);
         } else {
-            console.error("未收到有效的 ID");
+            console.error("Unity WebGL 尚未初始化");
         }
+    } else {
+        console.error("未收到有效的 ID");
+    }
     });
 
       var container = document.querySelector("#unity-container");
