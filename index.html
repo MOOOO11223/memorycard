@@ -44,21 +44,7 @@
 
 
 
-    // 確保消息中包含 id
-    if (event.data.id) {
-        const id = event.data.id;
-        console.log("收到來自父頁面的 ID：", id);
-
-        // 傳遞到 Unity WebGL
-        if (typeof unityInstance !== "undefined") {
-            unityInstance.SendMessage("loadid", "ReceiveID", id);
-        } else {
-            console.error("Unity WebGL 尚未初始化");
-        }
-    } else {
-        console.error("未收到有效的 ID");
-    }
-    });
+    
 
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -103,6 +89,24 @@
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
+
+
+
+      // 確保消息中包含 id
+    if (event.data.id) {
+        const id = event.data.id;
+        console.log("收到來自父頁面的 ID：", id);
+
+        // 傳遞到 Unity WebGL
+        if (typeof unityInstance !== "undefined") {
+            unityInstance.SendMessage("loadid", "ReceiveID", id);
+        } else {
+            console.error("Unity WebGL 尚未初始化");
+        }
+    } else {
+        console.error("未收到有效的 ID");
+    }
+    });
 
       // By default, Unity keeps WebGL canvas render target size matched with
       // the DOM size of the canvas element (scaled by window.devicePixelRatio)
