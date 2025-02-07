@@ -50,7 +50,28 @@ console.log("6666 ");
   // 確保消息中包含 id
   
     });
-  console.log("Unity WebGL idd3" + idd);
+  console.log("Unity WebGL idd2" + idd);
+
+    // 初始化 Unity WebGL
+    var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        })
+          .then((instance) => {
+            unityInstance = instance; // 保存 Unity 實例
+            loadingBar.style.display = "none";
+            console.log("Unity WebGL 已初始化");
+            console.log("Unity WebGL id" + idd);
+            unityInstance.SendMessage("loadid", "ReceiveID", idd);
+
+            
+          })
+          .catch((message) => {
+            console.error("Unity 初始化失敗：", message);
+          });
+      };
 
 
     
@@ -135,32 +156,6 @@ console.log("6666 ");
       canvas.style.background = "url('" + buildUrl + "/0207.jpg') center / cover";
       loadingBar.style.display = "block";
 
-
-
-
-
-
-
-      // 初始化 Unity WebGL
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        })
-          .then((instance) => {
-            unityInstance = instance; // 保存 Unity 實例
-            loadingBar.style.display = "none";
-            console.log("Unity WebGL 已初始化");
-            console.log("Unity WebGL id" + idd);
-            unityInstance.SendMessage("loadid", "ReceiveID", idd);
-
-            
-          })
-          .catch((message) => {
-            console.error("Unity 初始化失敗：", message);
-          });
-      };
 
 
 
