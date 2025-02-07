@@ -35,9 +35,14 @@
         console.warn("收到來自未知來源的消息，已忽略");
         return;
     }
-    
+    else
+    {
+      console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
+      console.log("消息來源驗證通過，id：", event.data.id);
+    }
 
-    console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
+
+
 
     // 確保消息中包含 id
     if (event.data.id) {
