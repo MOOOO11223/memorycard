@@ -25,6 +25,30 @@
     </div>
     <script>
 
+       // 監聽來自父頁面的消息
+    window.addEventListener("message", function (event) {
+        // 確保消息來自正確的來源
+        if (event.origin !== "https://aiilab.w3-ai.com") {
+            console.warn("收到來自未知來源的消息，已忽略");
+            return;
+        }
+
+        const data = event.data;
+        if (data && data.id) {
+            const id = data.id;
+            console.log("收到來自父頁面的 ID：" + id);
+
+            // 傳遞到 Unity WebGL
+            if (typeof unityInstance !== "undefined") {
+                unityInstance.SendMessage("loadid", "ReceiveID", id);
+            } else {
+                console.error("Unity WebGL 尚未初始化");
+            }
+        } else {
+            console.error("未收到有效的 ID");
+        }
+    });
+
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -57,11 +81,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/0206.loader.js";
+      var loaderUrl = buildUrl + "/0207.loader.js";
       var config = {
-        dataUrl: buildUrl + "/0206.data",
-        frameworkUrl: buildUrl + "/0206.framework.js",
-        codeUrl: buildUrl + "/0206.wasm",
+        dataUrl: buildUrl + "/0207.data",
+        frameworkUrl: buildUrl + "/0207.framework.js",
+        codeUrl: buildUrl + "/0207.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "My project",
@@ -98,7 +122,7 @@
         canvas.style.height = "100%";
       }
 
-      canvas.style.background = "url('" + buildUrl + "/0206.jpg') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/0207.jpg') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
