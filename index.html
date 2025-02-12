@@ -101,17 +101,52 @@
       canvas.style.background = "url('" + buildUrl + "/0207_3.jpg') center / cover";
       loadingBar.style.display = "block";
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                
-              }).catch((message) => {
-                alert(message);
-              });
+      // 初始化 Unity WebGL
+  var script = document.createElement("script");
+  script.src = loaderUrl;
+  script.onload = () => {
+    createUnityInstance(canvas, config, (progress) => {
+      progressBarFull.style.width = 100 * progress + "%";
+    })
+      .then((instance) => {
+        unityInstance = instance; // 保存 Unity 實例
+        loadingBar.style.display = "none";
+        console.log("Unity WebGL 已初始化，開始監聽父層頁面消息...");
+
+        // **在 Unity WebGL 初始化後，監聽來自父層的 `postMessage`**
+        window.addEventListener("message", function (event) {
+          console.log("收到來自父頁面的消息：", event.data); // 包含 baseUrl 和 id
+
+          // **驗證 `postMessage` 來源**
+          if (event.data.baseUrl !== "https://enterbook.myds.me/victor/memorycard.php") {
+            console.warn("收到來自未知來源的消息，已忽略", event.origin);
+            return;
+          } else {
+            console.log("消息來源驗證通過，baseUrl：", event.data.baseUrl);
+            console.log("消息來源驗證通過，id：", event.data.id);
+          }
+
+          // **確保 `id` 存在後傳遞給 Unity WebGL**
+          if (event.data.id) {
+            const id = event.data.id;
+            console.log("收到來自父頁面的 ID：", id);
+
+            // **確保 Unity WebGL 存在後才傳遞**
+            if (typeof unityInstance !== "undefined") {
+              unityInstance.SendMessage("loadid", "ReceiveID", id);
+              console.log("成功將 ID 傳遞到 Unity：" + id);
+            } else {
+              console.error("Unity WebGL 尚未初始化，無法傳遞 ID");
+            }
+          } else {
+            console.error("未收到有效的 ID");
+          }
+        });
+
+      })
+      .catch((message) => {
+        alert(message);
+      });
             };
 
       document.body.appendChild(script);
