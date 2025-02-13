@@ -104,37 +104,41 @@
       loadingBar.style.display = "block";
 
       // 初始化 Unity WebGL
-  var script = document.createElement("script");
-  script.src = loaderUrl;
-  script.onload = () => {
-    createUnityInstance(canvas, config, (progress) => {
-        progressBarFull.style.width = 100 * progress + "%";
-    }).then((instance) => {
-        unityInstance = instance;
-        loadingBar.style.display = "none";
-        console.log("Unity WebGL 已初始化");
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+              progressBarFull.style.width = 100 * progress + "%";
+          }).then((instance) => {
+              unityInstance = instance;
+              loadingBar.style.display = "none";
+              console.log("Unity WebGL 已初始化");
 
-        // **Unity WebGL 初始化後開始監聽 `postMessage`**
-        window.addEventListener("message", function (event) {
-            console.log("收到來自父層頁面的消息：", event.data);
+              // 🔹 WebGL 初始化後，通知父層網頁
+              window.parent.postMessage({ unityReady: true }, "*");
 
-            if (!event.data.id) {
-                console.error("未收到有效的 ID");
-                return;
-            }
+              // 🔹 監聽父層網頁傳來的 ID
+              window.addEventListener("message", function (event) {
+                  console.log("收到來自父層頁面的消息：", event.data);
 
-            if (typeof unityInstance !== "undefined") {
-                unityInstance.SendMessage("loadid", "ReceiveID", event.data.id);
-                console.log("成功將 ID 傳遞到 Unity：" + event.data.id);
-            } else {
-                console.error("Unity WebGL 尚未初始化，無法傳遞 ID");
-            }
-        });
+                  if (!event.data.id) {
+                      console.error("未收到有效的 ID");
+                      return;
+                  }
 
-    }).catch((message) => {
-        alert(message);
-    });
-};
+                  if (typeof unityInstance !== "undefined") {
+                      unityInstance.SendMessage("loadid", "ReceiveID", event.data.id);
+                      console.log("成功將 ID 傳遞到 Unity：" + event.data.id);
+                  } else {
+                      console.error("Unity WebGL 尚未初始化，無法傳遞 ID");
+                  }
+              });
+
+          }).catch((message) => {
+              alert(message);
+          });
+      };
+
 
 document.body.appendChild(script);
 
