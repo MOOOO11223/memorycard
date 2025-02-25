@@ -57,11 +57,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/0213.loader.js";
+      var loaderUrl = buildUrl + "/0225.loader.js";
       var config = {
-        dataUrl: buildUrl + "/0213.data",
-        frameworkUrl: buildUrl + "/0213.framework.js",
-        codeUrl: buildUrl + "/0213.wasm",
+        dataUrl: buildUrl + "/0225.data",
+        frameworkUrl: buildUrl + "/0225.framework.js",
+        codeUrl: buildUrl + "/0225.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "My project",
@@ -138,6 +138,17 @@
       };
       document.body.appendChild(script);
 
+      // 這裡定義給 Unity C# 呼叫的方法
+      function ReceiveScoresFromUnity(score, taskScore) {
+        console.log("[index.html] 收到 Unity 傳來的分數:", score, taskScore);
+
+        // 接下來把這些分數再傳給「最外層父頁」，假設它是用 postMessage 來接收
+        window.parent.postMessage({
+          action: "ReceiveScoresFromUnity",
+          score: score,
+          taskScore: taskScore
+        }, "*");
+      }
     </script>
   </body>
 </html>
