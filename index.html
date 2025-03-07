@@ -139,14 +139,14 @@
       document.body.appendChild(script);
 
       // 這裡定義給 Unity C# 呼叫的方法
-      function ReceiveScoresFromUnity(score, taskScore) {
-        console.log("[index.html] 收到 Unity 傳來的分數:", score, taskScore);
+      function ReceiveScoresFromUnity(taskScore, score) {
+        console.log("[index.html] 收到 Unity 傳來的分數:",taskScore, score);
 
         // 接下來把這些分數再傳給「最外層父頁」，假設它是用 postMessage 來接收
         window.parent.postMessage({
-          action: "ReceiveScoresFromUnity",
-          score: score,
-          taskScore: taskScore
+          action: "ReceiveScoresFromUnity",   
+          taskScore: taskScore,
+          score: score
         }, "*");
       }
     </script>
